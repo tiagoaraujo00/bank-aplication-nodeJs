@@ -10,6 +10,9 @@ const customers = [];
 app.get("/statement/:cpf", (req, res) => {
   const { cpf } = req.params
   const customer = customers.find((customer) => customer.cpf === cpf)
+  if(!customer) {
+    return res.status(400).json({ error: 'The customer is not registered' })
+  }
   return res.json(customer.statement)
 })
 app.post("/account", (req, res) => {
