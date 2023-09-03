@@ -7,6 +7,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const customers = [];
 
+app.get("/statement/:cpf", (req, res) => {
+  const { cpf } = req.params
+  const customer = customers.find((customer) => customer.cpf === cpf)
+  return res.json(customer.statement)
+})
 app.post("/account", (req, res) => {
   const { cpf, name } = req.body;
   const customerAlreadyExists = customers.some(
