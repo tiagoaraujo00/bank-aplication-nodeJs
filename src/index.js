@@ -7,6 +7,16 @@ app.use(express.urlencoded({ extended: true }));
 
 const customers = [];
 
+const getBalance = (statement) => {
+  const balance = statement.reduce((acc, operation) => {
+    if (operation.type === "credit") {
+      return acc + operation.amount
+    } else {
+      return acc - operation.amount
+    }
+  }, 0)
+  return balance
+}
 const autenticationAccountByCpf = (req, res, next) => {
   const { cpf } = req.headers
   const customer = customers.find((customer) => customer.cpf === cpf)
@@ -19,6 +29,21 @@ const autenticationAccountByCpf = (req, res, next) => {
 app.get("/statement/", autenticationAccountByCpf, (req, res) => {
   const { customer } = req
   return res.json(customer.statement)
+})
+app.post("/withdraw", autenticationAccountByCpf, (req, res) => {
+  const { amount } = req.body
+  const { customer } = req
+  const balance = getBalance(customer.statement)
+  if (balance < amount) {
+    return res.status(400).json({ error: "Insufficient balance!" })
+  }
+  const statementOperation = {
+    amount,
+    created_at: new Date(),
+    type: "debit"
+  }
+  customer.statement.push(statementOperation)
+  return res.status(201).send()
 })
 app.post("/account", (req, res) => {
   const { cpf, name } = req.body;
