@@ -17,7 +17,7 @@ const autenticationAccountByCpf = (req, res, next) => {
   return next()
 }
 
-app.get("/statement/:cpf", autenticationAccountByCpf, (req, res) => {
+app.get("/statement/", autenticationAccountByCpf, (req, res) => {
   const { customer } = req
   return res.json(customer.statement)
 })
