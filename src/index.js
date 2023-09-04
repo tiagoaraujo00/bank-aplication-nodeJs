@@ -16,7 +16,6 @@ const autenticationAccountByCpf = (req, res, next) => {
   req.customer = customer
   return next()
 }
-
 app.get("/statement/", autenticationAccountByCpf, (req, res) => {
   const { customer } = req
   return res.json(customer.statement)
@@ -37,6 +36,18 @@ app.post("/account", (req, res) => {
   });
   return res.status(201).send();
 });
+app.post("/deposit", autenticationAccountByCpf, (req, res) => {
+  const { description, amount } = req.body
+  const { customer } = req;
+  const statementOperation = {
+    description,
+    amount,
+    created_at: new Date(),
+    type: "credit",
+  }
 
+  customer.statement.push(statementOperation)
+  return res.status(200).send()
+})
 
 app.listen(3333, () => console.log("ouvindo na porta 3333"));
