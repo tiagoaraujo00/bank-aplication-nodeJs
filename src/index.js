@@ -99,5 +99,10 @@ app.put('/account', autenticationAccountByCpf, (req, res) => {
 
   return res.status(201).send()
 })
+app.delete("/account", autenticationAccountByCpf, (req, res) => {
+  const { customer } = req
+  customers.splice(customer, 1)
+  return res.status(200).json(customers)
+})
 
 app.listen(3333, () => console.log("ouvindo na porta 3333"));
