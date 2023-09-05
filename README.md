@@ -11,7 +11,7 @@
 - [x] Deve ser possível atualizar dados da conta do cliente
 - [x] Deve ser possível obter dados da conta do cliente
 - [x] Deve ser possível deletar uma conta
-- [] Deve ser posspivel retornar o balance
+- [x] Deve ser posspivel retornar o balance
 
 
 ---
