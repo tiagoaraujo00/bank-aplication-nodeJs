@@ -47,6 +47,12 @@ app.get("/account", autenticationAccountByCpf, (req, res) => {
   const { customer } = req
   return res.status(200).json(customer)
 })
+app.get("/balance", autenticationAccountByCpf, (req, res) => {
+  const { customer } = req
+  const balance = getBalance(customer.statement)
+  return res.status(200).json(customer)
+
+})
 app.post("/withdraw", autenticationAccountByCpf, (req, res) => {
   const { amount } = req.body;
   const { customer } = req;
